@@ -19,7 +19,7 @@ class Image(Base):
     
     uploaded_id = Column(
     UUID(as_uuid=True),
-    ForeignKey("users_id", ondelete="SET NULL"),
+    ForeignKey("users.id", ondelete="SET NULL"),
     nullable=True,
     index=True,
     )
