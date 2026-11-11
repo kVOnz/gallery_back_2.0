@@ -20,3 +20,10 @@ class ImageResponse(ImageBase):
 
     class Config:
         from_attributes = True
+
+class ImageUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=3, max_length=100)
+    title: Optional[str] = Field(None, min_length=3, max_length=200)
+    file_path: Optional[str] = Field(None, max_length=500)
+    is_moderated: Optional[bool] = Field(None, description="Статус модерации")
+    moderation_code: Optional[str] = Field(None, max_length=10)
