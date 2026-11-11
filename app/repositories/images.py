@@ -1,5 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from uuid import UUID
+from typing import List, Optional
 
 from app.models.image import Image
 from app.schemas.image import ImageCreate
@@ -17,3 +19,11 @@ async def create_image(db: AsyncSession, image_data: ImageCreate) -> Image: #orm
     await db.commit()
     await db.refresh(db_image)
     return db_image
+
+async def get_image_by_id(db: AsyncSession, image_id: UUID) -> Optional[Image]:
+    result = await db.execute(select(Image).where(Image.id == image_id))
+    return result.scalars().first()
+
+async def find_image_by_name(db: AsyncSession, name: str) -> Optional[Image]:
+    result = await db.execute(select(Image).where(Image.name == name))
+    return result.scalars().first()
