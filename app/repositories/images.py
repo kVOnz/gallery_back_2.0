@@ -53,3 +53,7 @@ async def update_image(
     await db.commit()
     await db.refresh(image)
     return image
+
+async def delete_image(db: AsyncSession, image: Image) -> None:
+    await db.delete(image)
+    await db.commit()
