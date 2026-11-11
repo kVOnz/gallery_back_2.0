@@ -4,7 +4,7 @@ from uuid import UUID
 from typing import Sequence, Optional
 
 from app.models.image import Image
-from app.schemas.image import ImageCreate
+from app.schemas.image import ImageCreate, ImageUpdate
 
 async def create_image(db: AsyncSession, image_data: ImageCreate) -> Image: #orm модель
     db_image = Image(
@@ -42,3 +42,14 @@ async def get_all_images(
     
     result = await db.execute(query)
     return result.scalars().all()
+
+async def update_image(
+    db: AsyncSession, 
+    image: Image, 
+    update_data: ImageUpdate) -> Image:
+    for field, value in update_data.model_dump(exclude_unset=True).items():
+        setattr(image, field, value)
+    
+    await db.commit()
+    await db.refresh(image)
+    return image
